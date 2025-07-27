@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Job Portal{% endblock %}</title>
+  {% load profile_extras %}
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="pt-16 bg-gray-100 font-sans leading-normal tracking-normal">
+
+  <nav class="fixed top-0 left-0 w-full bg-gray-800 text-white px-4 py-3 flex items-center justify-between shadow z-50">
+
+    <a href="{% url 'job_list' %}" class="text-2xl font-bold">JobPortal</a>
+
+    <div class="hidden md:flex space-x-4 items-center">
+      <a href="{% url 'job_list' %}" class="hover:text-yellow-400">Home</a>
+
+      {% if user.is_authenticated %}
+        {% if user|can_post_job %}
+          <a href="{% url 'job_create' %}" class="px-3 py-2 hover:text-yellow-400">Post Job</a>
+        {% endif %}
+
+        {% if user.is_staff %}
+          <a href="{% url 'pending_recruiters' %}" class="px-3 py-2 hover:text-yellow-400">Pending Recruiters</a>
+        {% endif %}
+
+
+        <!-- Dropdown -->
+        <div class="relative group">
+          <button class="hover:text-yellow-400 focus:outline-none">Welcome, {{ user.username }} ⌄</button>
+          <div class="absolute right-0 mt-2 w-40 bg-white text-black rounded shadow-lg z-10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+            <form method="POST" action="{% url 'logout' %}">
+              {% csrf_token %}
+              <button type="submit" class="block px-4 py-2 w-full text-left hover:bg-gray-100">Logout</button>
+            </form>
+          </div>
+        </div>
+      {% else %}
+        <a href="{% url 'login' %}" class="hover:text-yellow-400">Login</a>
+        <a href="{% url 'register' %}" class="hover:text-yellow-400">Register</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  {% if messages %}
+    <div class="p-4 space-y-2">
+      {% for message in messages %}
+        <div class="text-white px-4 py-2 rounded {{ message.tags|yesno:'bg-green-600,bg-red-600' }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+<div class="container mx-auto pt-20 px-4">
+
+    {% block content %}{% endblock %}
+  </div>
+</body>
+</html>

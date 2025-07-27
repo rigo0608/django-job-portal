@@ -1,0 +1,1 @@
+web: gunicorn django_job_portal.wsgi:application
