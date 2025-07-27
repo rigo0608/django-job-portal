@@ -16,7 +16,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 SECRET_KEY = 'django-insecure-test-key'
 DEBUG = True
 
-ALLOWED_HOSTS = [os.environ.get('RENDER_EXTERNAL_HOSTNAME'), 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['django-job-portal-eic7.onrender.com', '127.0.0.1', 'localhost']
+
 
 
 INSTALLED_APPS = [
